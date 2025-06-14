@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Growth Assessor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Plant Growth & Health Assessor 🌿</h1>
+        <p>Upload an image of your plant to get an assessment:</p>
+
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="image-upload" name="file" accept="image/png, image/jpeg, image/jpg" required>
+            <button type="submit">Assess Plant</button>
+        </form>
+
+        <div id="result-container" class="hidden">
+            <h2>Prediction Result:</h2>
+            <p>Class: <span id="predicted-class"></span></p>
+            <p>Confidence: <span id="confidence"></span></p>
+            <img id="uploaded-image" src="#" alt="Uploaded Plant Image" class="hidden">
+        </div>
+
+        <div id="error-message" class="hidden error"></div>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('image-upload');
+            const file = fileInput.files[0];
+            const resultContainer = document.getElementById('result-container');
+            const errorMessage = document.getElementById('error-message');
+            const uploadedImage = document.getElementById('uploaded-image');
+
+            // Reset previous results/errors
+            resultContainer.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            errorMessage.textContent = '';
+            uploadedImage.classList.add('hidden');
+            uploadedImage.src = '#';
+
+            if (!file) {
+                errorMessage.textContent = 'Please select an image file.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('predicted-class').textContent = data.predicted_class;
+                    document.getElementById('confidence').textContent = data.confidence;
+                    
+                    // Display uploaded image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedImage.src = e.target.result;
+                        uploadedImage.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+
+                    resultContainer.classList.remove('hidden');
+                } else {
+                    errorMessage.textContent = `Error: ${data.error || 'Something went wrong.'}`;
+                    errorMessage.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorMessage.textContent = `Network error or server unavailable: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
