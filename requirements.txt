@@ -1,5 +1,4 @@
 absl-py==2.3.0
-anaconda-anon-usage @ file:///croot/anaconda-anon-usage_1710965072196/work
 anyio==4.9.0
 archspec @ file:///croot/archspec_1709217642129/work
 argon2-cffi==23.1.0
