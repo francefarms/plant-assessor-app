@@ -9,6 +9,8 @@ Implemented and trained a Convolutional Neural Network (CNN) using TensorFlow/Ke
 Gained practical experience with supervised learning techniques for visual data.
 Understood and applied image preprocessing (resizing, normalization) and data augmentation to prepare image datasets for training.
 Learned to save and load trained ML models (.h5 files) for efficient deployment.
+
+
 Data Handling & Preparation:
 Organized and labeled custom image datasets (e.g., 'healthy' vs. 'unhealthy' plant images).
 Dealt with challenges of preparing real-world image data for machine learning.
@@ -16,6 +18,8 @@ Web Application Development:
 Built a basic web interface using Flask (Python web framework) to allow users to upload images and receive predictions.
 Integrated a trained machine learning model into a web application's backend.
 Developed a simple frontend using HTML, CSS, and JavaScript for user interaction.
+
+
 Deployment & Troubleshooting:
 Gained experience with local web server deployment (Flask's development server).
 Successfully version-controlled the project using Git and hosted it on GitHub.
